@@ -15,4 +15,4 @@ print and share high-res file
 Radiant Rhos
 
 
-Email SVG file to alyce
+Email HIGH_RES file to alyce

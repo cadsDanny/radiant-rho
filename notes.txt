@@ -1,16 +1,15 @@
 
 steps to take
 
-create initial svg file (white background)
+create initial high-res file (white background)
 create layer with squares
     49 down to 1, for square edge lengths
     14 in total
-print and share svg file 
-
+print and share high-res file 
 add labels to squares
 
 add curves and circles to squares
-print and share svg file 
+print and share high-res file 
 
 
 Radiant Rhos

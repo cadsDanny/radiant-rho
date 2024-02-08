@@ -32,6 +32,7 @@ directions = [(1, 1), (1, -1), (-1, -1), (-1, 1)]
 # spiral outwardly in a clockwise direction
 origin = (0.0, 0.0, 0.0)
 
+factor = .1        
 def calculate_positions(start_position=origin, sizes=edge_lengths, course=directions):
     positions = [start_position]
     # The next position is obtained by summing the current and next edge lengths, 
@@ -40,7 +41,7 @@ def calculate_positions(start_position=origin, sizes=edge_lengths, course=direct
 
     for i in range(1, 14):
         previous_position = positions[i-1]
-        shift_length = (sizes[i-1]+sizes[i]) / 2
+        shift_length = factor * (sizes[i-1]+sizes[i]) / 2
         shift_x = shift_length * (directions[i % 4][0])
         shift_y = shift_length * (directions[i % 4][1])
         position = (previous_position[0] + shift_x, 
@@ -50,14 +51,19 @@ def calculate_positions(start_position=origin, sizes=edge_lengths, course=direct
     return (positions)
 # print(calculate_positions())
 
-def create_squares():
-    pass
-
+def create_squares(sizes=edge_lengths):
+    positions = calculate_positions()
+    for i in range(0, 14):
+        # add a square plane, scaled to size
+        # the default size of a plane is one meter 
+        # largest square to be 28 centimeters
+        bpy.ops.mesh.primitive_plane_add(
+            size=sizes[i] * factor, 
+            location=(positions[i][0], positions[i][1], 0.0001))
 
 def main():
-    
-    print(calculate_positions())
-
+    create_squares()
+    # print(calculate_positions())
 
 if __name__ == "__main__":
     main()

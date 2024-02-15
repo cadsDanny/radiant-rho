@@ -121,10 +121,10 @@ def add_rho_camera():
 
 def add_light():
     bpy.ops.object.light_add(
-        type='POINT', 
-        location=(0, .2, 4))
+        type='AREA', 
+        location=(3, 0, 4))
 #bpy.ops.object.light_add(type='SPOT', radius=1, align='WORLD', location=(0, 0.2, 3), rotation=(0, 0, 0), scale=(1, 1, 1))
-    bpy.context.object.data.energy = 200
+    bpy.context.object.data.energy = 1000
 
 def set_resolution():
     bpy.context.scene.render.resolution_x = 4500

@@ -112,7 +112,28 @@ def create_label(location, content, scale):
     obj.active_material = black
     bpy.context.scene.collection.objects.link(obj)
 
+
+def add_rho_camera():
+    bpy.ops.object.camera_add(
+        location=(0, 0, 2.2), 
+        rotation=(0, 0, 0),
+        scale=(1, 1, 1))
+
+def add_light():
+    bpy.ops.object.light_add(
+        type='POINT', 
+        location=(0, .2, 4))
+#bpy.ops.object.light_add(type='SPOT', radius=1, align='WORLD', location=(0, 0.2, 3), rotation=(0, 0, 0), scale=(1, 1, 1))
+    bpy.context.object.data.energy = 200
+
+def set_resolution():
+    bpy.context.scene.render.resolution_x = 4500
+    bpy.context.scene.render.resolution_y = 6000
+
 def main():
+    set_resolution()
+    add_rho_camera()
+    add_light()
     add_background()
     create_spiral_squares()
     # print(calculate_positions())

@@ -15,7 +15,7 @@ RHO = 1.3246324717957244746
     
 edge_lengths = [1, 2, 2, 3, 4, 5, 7, 9, 12, 16, 21, 28, 37, 49]
                                                                                                                                                             
-
+four_hundreds = [100, 75, 57, 43, 32, 25, 18, 14, 11, 7, 7, 4, 3, 4]
 
 BLACK = (0.0, 0.0, 0.0, 1.0)
 RED = (1.0, 0.0, 0.0, 1.0)
@@ -88,6 +88,16 @@ def create_spiral_squares(sizes=edge_lengths):
         bpy.context.active_object.name = "square-" + str(i) + "-mask"
         bpy.context.active_object.active_material = bpy.data.materials["white"]    
         #bpy.context.scene.collection.objects.link(obj)
+    
+        #create_text_object('100')
+        
+        create_label(
+            location=(positions[i][0], positions[i][1], 0.001),
+            content= str(edge_lengths[i]),
+            # content= str(four_hundreds[-i]),
+            scale=sizes[i] * factor
+            )
+        
 
 def add_background():
     location = origin
@@ -108,8 +118,15 @@ def create_label(location, content, scale):
     font_curve = bpy.data.curves.new(type="FONT", name="objectSize")
     font_curve.body = content
     obj = bpy.data.objects.new(name="Font Object", object_data=font_curve)
+    obj.scale.x = scale * 0.8
+    obj.scale.y = scale * 0.8
     obj.location = location
-    obj.active_material = black
+    obj.data.align_x = 'CENTER'
+    obj.data.align_y = 'CENTER'
+    obj.location.y = location[1] - .05 * scale
+    # obj.location.y = location[1] - scale / 2.3
+    # obj.location.z = location[2]
+    obj.active_material = bpy.data.materials["black"]    
     bpy.context.scene.collection.objects.link(obj)
 
 
@@ -123,12 +140,40 @@ def add_light():
     bpy.ops.object.light_add(
         type='AREA', 
         location=(3, 0, 4))
-#bpy.ops.object.light_add(type='SPOT', radius=1, align='WORLD', location=(0, 0.2, 3), rotation=(0, 0, 0), scale=(1, 1, 1))
-    bpy.context.object.data.energy = 1000
+    bpy.context.object.data.energy = 300
+    bpy.ops.object.light_add(
+        type='AREA', 
+        location=(-3, 0, 4))
+    bpy.context.object.data.energy = 300
 
 def set_resolution():
     bpy.context.scene.render.resolution_x = 4500
     bpy.context.scene.render.resolution_y = 6000
+
+def create_text_object(text):
+    bpy.ops.object.text_add()
+
+    text_obj = bpy.context.active_object
+    text_obj.scale *= 0.49
+    text_obj.data.body = text
+
+    bpy.ops.object.origin_set(type="ORIGIN_CENTER_OF_MASS", 
+                              center="MEDIAN")
+    text_obj.location = 0, 0, 0
+    text_obj.data.extrude = 0.01
+    text_obj.data.fill_mode = "BOTH"
+    # text_obj.data.bevel_depth = 0.002
+    text_obj.data.materials.append(bpy.data.materials["black"])
+    
+    return text_obj
+
+
+def create_color_plane():
+    bpy.ops.mesh.primitive_plane_add()
+    plane = active_object()
+    plane.scale.y *= 0.2
+    plane.data.materials.append(black)
+    return plane
 
 def main():
     set_resolution()

@@ -75,6 +75,7 @@ def create_spiral_squares(sizes=edge_lengths):
         # add a square plane, scaled to size
         # the default size of a plane is one meter 
         # largest square to be 28 centimeters
+        border_size = i * 0.001 + 0.002
         bpy.ops.mesh.primitive_plane_add(
             size=sizes[i] * factor, 
             location=(positions[i][0], positions[i][1], 0.0001))
@@ -166,14 +167,6 @@ def create_text_object(text):
     text_obj.data.materials.append(bpy.data.materials["black"])
     
     return text_obj
-
-
-def create_color_plane():
-    bpy.ops.mesh.primitive_plane_add()
-    plane = active_object()
-    plane.scale.y *= 0.2
-    plane.data.materials.append(black)
-    return plane
 
 def main():
     set_resolution()

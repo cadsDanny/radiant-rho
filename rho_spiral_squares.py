@@ -45,7 +45,7 @@ directions = clockwise_from_left
 origin = (0.0, 0, 0.0)
 #origin = (0.1254, -0.1853, 0.0)
 
-factor = .012
+factor = .02
 border_size = .01
 
 def calculate_positions(start_position=origin, 
@@ -144,7 +144,7 @@ def create_label(location, content, scale):
 
 def add_camera():
     bpy.ops.object.camera_add(
-        location=(origin[0], origin[1], 2.2), 
+        location=(origin[0], origin[1], 3.3), 
         rotation=(0, 0, 0),
         scale=(1, 1, 1))
 

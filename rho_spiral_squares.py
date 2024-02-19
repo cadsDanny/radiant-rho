@@ -42,13 +42,12 @@ counter_clockwise_from_top = [(-1, -1), (1, -1), (1, 1), (-1, 1)]
 directions = clockwise_from_left
 # these positions start in the center and 
 # spiral outwardly in a clockwise direction
-#origin = (0.0, 0, 0.0)
-origin = (0.1254, -0.1853, 0.0)
+origin = (0.0, 0, 0.0)
+#origin = (0.1254, -0.1853, 0.0)
 
 factor = .012
 border_size = .01
-spiral_height = factor * sum(edge_lengths[-3:])
-spiral_width = factor * sum(edge_lengths[-2:])
+
 def calculate_positions(start_position=origin, 
                         sizes=edge_lengths, 
                         directions=clockwise_from_top):
@@ -67,7 +66,20 @@ def calculate_positions(start_position=origin,
                     0.0)
         positions.append(position)        
     return (positions)
-# print(calculate_positions())
+
+
+# get the value the highest x in the lowest x also the y values
+# get the index number for that value to then obtain size in edge_lengths
+positions = calculate_positions()
+xs, ys, zs = zip(*positions)
+max_x = max(xs) + factor * (edge_lengths[xs.index(max(xs))]) / 2
+min_x = min(xs) - factor * (edge_lengths[xs.index(min(xs))]) / 2
+max_y = max(ys) + factor * (edge_lengths[ys.index(max(ys))]) / 2
+min_y = min(ys) - factor * (edge_lengths[ys.index(min(ys))]) / 2
+origin = ((max_x + min_x) / 2, (max_y + min_y) / 2, 0)
+
+spiral_width = max_x - min_x
+spiral_height = max_y - min_y
 
 def create_spiral_squares(sizes=edge_lengths):
     positions = calculate_positions()
@@ -101,19 +113,18 @@ def create_spiral_squares(sizes=edge_lengths):
         
 
 def add_background():
-    location = origin
     obj = bpy.ops.mesh.primitive_plane_add(
             size = 1, #edge_lengths[-1] * factor,
-            location = (0, 0, -0.001))
+            location = origin)
 
     bpy.context.active_object.scale[0] = spiral_width
     bpy.context.active_object.scale[1] = spiral_height
+    
     bpy.context.active_object.name = "background"
     bpy.context.active_object.active_material = bpy.data.materials["green"]    
     #
     # bpy.context.scene.collection.objects.link(obj)
     
-# create a sequence of squares along a diagonal
 # add labels to the squares indicating size
 def create_label(location, content, scale):
     font_curve = bpy.data.curves.new(type="FONT", name="objectSize")
@@ -131,9 +142,9 @@ def create_label(location, content, scale):
     bpy.context.scene.collection.objects.link(obj)
 
 
-def add_rho_camera():
+def add_camera():
     bpy.ops.object.camera_add(
-        location=(0, 0, 2.2), 
+        location=(origin[0], origin[1], 2.2), 
         rotation=(0, 0, 0),
         scale=(1, 1, 1))
 
@@ -170,7 +181,7 @@ def create_text_object(text):
 
 def main():
     set_resolution()
-    add_rho_camera()
+    add_camera()
     add_light()
     add_background()
     create_spiral_squares()

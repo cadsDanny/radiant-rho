@@ -50,7 +50,7 @@ border_size = .01
 
 def calculate_positions(start_position=origin, 
                         sizes=edge_lengths, 
-                        directions=clockwise_from_top):
+                        directions=counter_clockwise_from_left):
     positions = [start_position]
     # The next position is obtained by summing the current and next edge lengths, 
     # dividing by two, multiplying  length times the x and y of the next direction;
@@ -144,7 +144,8 @@ def create_label(location, content, scale):
 
 def add_camera():
     bpy.ops.object.camera_add(
-        location=(origin[0], origin[1], 3.3), 
+        # location=(min_x / 2, min_y / 2, 4.4), 
+        location=(origin[0], origin[1] + .5, 4.4), 
         rotation=(0, 0, 0),
         scale=(1, 1, 1))
 

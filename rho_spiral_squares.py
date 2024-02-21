@@ -78,8 +78,37 @@ max_y = max(ys) + factor * (edge_lengths[ys.index(max(ys))]) / 2
 min_y = min(ys) - factor * (edge_lengths[ys.index(min(ys))]) / 2
 origin = ((max_x + min_x) / 2, (max_y + min_y) / 2, 0)
 
+
 spiral_width = max_x - min_x
 spiral_height = max_y - min_y
+
+header_position_x =  spiral_width / 2
+header_position_y =  spiral_height / 2 * RHO
+
+
+def create_header():
+    add_text(location=(header_position_x, header_position_y, 0.001),
+            content='base-',
+            scale=1)
+
+
+def add_rho(location=(0, 0, 0), scale=1):
+    font_curve = bpy.data.curves.new(type="FONT", name="rho")
+    font_curve.body = "r" # 𝞺 ⍴ 𝛒 "
+    obj = bpy.data.objects.new(name="Greek Symbol", object_data=font_curve)
+    fnt = bpy.data.fonts.load('/usr/share/fonts/ATHENS1X.TTF')
+    obj.data.font = fnt
+    obj.scale.x = scale
+    obj.scale.y = scale
+    obj.location.x = origin[0]
+    obj.location.y = (max_y - origin[1]) * 2
+    obj.location.z = 0.06 
+    obj.data.align_x = 'CENTER'
+    obj.data.align_y = 'CENTER'
+    obj.active_material = bpy.data.materials["black"]    
+    bpy.context.scene.collection.objects.link(obj)
+
+
 
 def create_spiral_squares(sizes=edge_lengths):
     positions = calculate_positions()
@@ -104,7 +133,7 @@ def create_spiral_squares(sizes=edge_lengths):
     
         #create_text_object('100')
         
-        create_label(
+        add_text(
             location=(positions[i][0], positions[i][1], 0.001),
             content= str(edge_lengths[i]),
             # content= str(four_hundreds[-i]),
@@ -126,7 +155,7 @@ def add_background():
     # bpy.context.scene.collection.objects.link(obj)
     
 # add labels to the squares indicating size
-def create_label(location, content, scale):
+def add_text(location, content, scale):
     font_curve = bpy.data.curves.new(type="FONT", name="objectSize")
     font_curve.body = content
     obj = bpy.data.objects.new(name="Font Object", object_data=font_curve)
@@ -181,11 +210,13 @@ def create_text_object(text):
     return text_obj
 
 def main():
+    create_header()
     set_resolution()
     add_camera()
     add_light()
     add_background()
     create_spiral_squares()
+    add_rho()
     # print(calculate_positions())
 
 if __name__ == "__main__":

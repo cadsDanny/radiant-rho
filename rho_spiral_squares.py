@@ -5,7 +5,7 @@
 # The image illustrates the proportionality built into the plastic ratio.
 
 import bpy
-RHO = 1.3246324717957244746
+RHO = 1.32471795724474602596090885447809734073
 
 # Several lists are required:
 #     The edge length of the squares, 
@@ -16,7 +16,7 @@ RHO = 1.3246324717957244746
 edge_lengths = [1, 2, 2, 3, 4, 5, 7, 9, 12, 16, 21, 28, 37, 49]
                                                                                                                                                             
 four_hundreds = [100, 75, 57, 43, 32, 25, 18, 14, 11, 7, 7, 4, 3, 4]
-
+labels_200 = [5, 7, 9, 12, 16, 21, 28, 37, 49, 65, 86, 114, 151, 200]
 BLACK = (0.0, 0.0, 0.0, 1.0)
 RED = (1.0, 0.0, 0.0, 1.0)
 GREEN = (0.0, 1.0, 0.0, 1.0)
@@ -82,26 +82,29 @@ origin = ((max_x + min_x) / 2, (max_y + min_y) / 2, 0)
 spiral_width = max_x - min_x
 spiral_height = max_y - min_y
 
-header_position_x =  spiral_width / 2
-header_position_y =  spiral_height / 2 * RHO
+header_position_x =  -.303 #spiral_width / 2
+header_position_y =  1.83 #spiral_height / 2 * RHO
 
 
 def create_header():
     add_text(location=(header_position_x, header_position_y, 0.001),
-            content='base-',
-            scale=1)
-
-
-def add_rho(location=(0, 0, 0), scale=1):
+            content="\"Rho\", the radiant number.",
+            scale=0.2)
+    add_heading_background()
+    
+    
+def add_rho(location=(header_position_x, header_position_y - 0.3, 0), 
+            scale=0.2):
     font_curve = bpy.data.curves.new(type="FONT", name="rho")
-    font_curve.body = "r" # 𝞺 ⍴ 𝛒 "
+    font_curve.body = "r = 1.32471795724474602596..." # 𝞺 ⍴ 𝛒 "
     obj = bpy.data.objects.new(name="Greek Symbol", object_data=font_curve)
     fnt = bpy.data.fonts.load('/usr/share/fonts/ATHENS1X.TTF')
     obj.data.font = fnt
     obj.scale.x = scale
     obj.scale.y = scale
-    obj.location.x = origin[0]
-    obj.location.y = (max_y - origin[1]) * 2
+    obj.location.x = location[0]
+    obj.location.y = location[1]
+
     obj.location.z = 0.06 
     obj.data.align_x = 'CENTER'
     obj.data.align_y = 'CENTER'
@@ -135,9 +138,8 @@ def create_spiral_squares(sizes=edge_lengths):
         
         add_text(
             location=(positions[i][0], positions[i][1], 0.001),
-            content= str(edge_lengths[i]),
-            # content= str(four_hundreds[-i]),
-            scale=sizes[i] * factor
+            content= str(labels_200[i]),
+            scale=sizes[i] * factor * .75
             )
         
 
@@ -151,15 +153,25 @@ def add_background():
     
     bpy.context.active_object.name = "background"
     bpy.context.active_object.active_material = bpy.data.materials["green"]    
-    #
-    # bpy.context.scene.collection.objects.link(obj)
+    
+def add_heading_background():
+    obj = bpy.ops.mesh.primitive_plane_add(
+            size = 1, 
+            location = origin)
+
+    bpy.context.active_object.location.y = spiral_height / RHO
+    bpy.context.active_object.scale[0] = spiral_width
+    bpy.context.active_object.scale[1] = spiral_height / RHO
+    
+    bpy.context.active_object.name = "heading_background"
+    bpy.context.active_object.active_material = bpy.data.materials["white"]
     
 # add labels to the squares indicating size
 def add_text(location, content, scale):
     font_curve = bpy.data.curves.new(type="FONT", name="objectSize")
     font_curve.body = content
     obj = bpy.data.objects.new(name="Font Object", object_data=font_curve)
-    obj.scale.x = scale * 0.8
+    obj.scale.x = scale * 0.6
     obj.scale.y = scale * 0.8
     obj.location = location
     obj.data.align_x = 'CENTER'
@@ -177,6 +189,18 @@ def add_camera():
         location=(origin[0], origin[1] + .5, 4.4), 
         rotation=(0, 0, 0),
         scale=(1, 1, 1))
+    
+'''
+better_living_through_better_language_
+better_language_through_better_numbers_
+better_numbers_through_better_bases
+
+I'm all about the base
+the mighty morphic number base
+we're number 0.011
+a number for better living
+a number for Ignatius
+'''
 
 def add_light():
     bpy.ops.object.light_add(

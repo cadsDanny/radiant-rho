@@ -14,9 +14,12 @@ RHO = 1.32471795724474602596090885447809734073
 #     the cyclic series of directions between squares,
     
 edge_lengths = [1, 2, 2, 3, 4, 5, 7, 9, 12, 16, 21, 28, 37, 49]
-                                                                                                                                                            
-four_hundreds = [100, 75, 57, 43, 32, 25, 18, 14, 11, 7, 7, 4, 3, 4]
-labels_200 = [5, 7, 9, 12, 16, 21, 28, 37, 49, 65, 86, 114, 151, 200]
+
+labels_100 = ['.03', '.03', '.05', '.06', '.08', '.11', '.14', '.18', '.25', '.32', '.43', '.57', '.75', '1.00']
+
+
+int_200 = [5, 7, 9, 12, 16, 21, 28, 37, 49, 65, 86, 114, 151, 200]
+
 BLACK = (0.0, 0.0, 0.0, 1.0)
 RED = (1.0, 0.0, 0.0, 1.0)
 GREEN = (0.0, 1.0, 0.0, 1.0)
@@ -83,20 +86,24 @@ spiral_width = max_x - min_x
 spiral_height = max_y - min_y
 
 header_position_x =  -.303 #spiral_width / 2
-header_position_y =  1.83 #spiral_height / 2 * RHO
+header_position_y =  max_y * 1.35
 
 
 def create_header():
     add_text(location=(header_position_x, header_position_y, 0.001),
-            content="\"Rho\", the radiant number.",
-            scale=0.2)
+            content="We're number .011 !",
+            # content="\"Rho\", the radiant number.",
+            scale=0.35)
+    add_text(location=(header_position_x, header_position_y * .85, 0.001),
+            content="base-     (\"rho,\" 1.324717...)",
+            scale=0.25)
     add_heading_background()
     
     
-def add_rho(location=(header_position_x, header_position_y - 0.3, 0), 
-            scale=0.2):
+def add_rho(location=(min_x * .52, header_position_y * .84, 0), 
+            scale=0.25):
     font_curve = bpy.data.curves.new(type="FONT", name="rho")
-    font_curve.body = "r = 1.32471795724474602596..." # 𝞺 ⍴ 𝛒 "
+    font_curve.body = "r"#=1.324717..." # 𝞺 ⍴ 𝛒 "
     obj = bpy.data.objects.new(name="Greek Symbol", object_data=font_curve)
     fnt = bpy.data.fonts.load('/usr/share/fonts/ATHENS1X.TTF')
     obj.data.font = fnt
@@ -125,20 +132,16 @@ def create_spiral_squares(sizes=edge_lengths):
             location=(positions[i][0], positions[i][1], 0.0001))
         bpy.context.active_object.name = "square-" + str(i)
         bpy.context.active_object.active_material = bpy.data.materials["black"]    
-        #bpy.context.scene.collection.objects.link(obj)
         bpy.ops.mesh.primitive_plane_add(
             size=factor * sizes[i] - border_size,
-            # size=sizes[i] * factor * 0.9, 
             location=(positions[i][0], positions[i][1], 0.0002))
         bpy.context.active_object.name = "square-" + str(i) + "-mask"
         bpy.context.active_object.active_material = bpy.data.materials["white"]    
-        #bpy.context.scene.collection.objects.link(obj)
     
-        #create_text_object('100')
-        
         add_text(
             location=(positions[i][0], positions[i][1], 0.001),
-            content= str(labels_200[i]),
+            content= labels_100[i],
+            # content= str(edge_lengths[i]),
             scale=sizes[i] * factor * .75
             )
         
@@ -159,9 +162,10 @@ def add_heading_background():
             size = 1, 
             location = origin)
 
-    bpy.context.active_object.location.y = spiral_height / RHO
+    bpy.context.active_object.location.y = max_y + (spiral_width - spiral_height) / 2
     bpy.context.active_object.scale[0] = spiral_width
-    bpy.context.active_object.scale[1] = spiral_height / RHO
+    bpy.context.active_object.scale[1] = spiral_width - spiral_height
+
     
     bpy.context.active_object.name = "heading_background"
     bpy.context.active_object.active_material = bpy.data.materials["white"]

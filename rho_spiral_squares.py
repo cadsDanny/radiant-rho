@@ -95,15 +95,16 @@ def create_header():
             # content="\"Rho\", the radiant number.",
             scale=0.35)
     add_text(location=(header_position_x, header_position_y * .85, 0.001),
-            content="base-     (\"rho,\" 1.324717...)",
-            scale=0.25)
+            content="Use base-rho binary, and you can " +
+                    "be number .00111, too!",
+            scale=0.10)
     add_heading_background()
     
     
-def add_rho(location=(min_x * .52, header_position_y * .84, 0), 
+def add_rho(location=(min_x * .52, header_position_y * .805, 0), 
             scale=0.25):
     font_curve = bpy.data.curves.new(type="FONT", name="rho")
-    font_curve.body = "r"#=1.324717..." # 𝞺 ⍴ 𝛒 "
+    font_curve.body = "r=1.324717..." # 𝞺 ⍴ 𝛒 "
     obj = bpy.data.objects.new(name="Greek Symbol", object_data=font_curve)
     fnt = bpy.data.fonts.load('/usr/share/fonts/ATHENS1X.TTF')
     obj.data.font = fnt
@@ -218,7 +219,7 @@ def add_light():
 
 def set_resolution():
     bpy.context.scene.render.resolution_x = 4500
-    bpy.context.scene.render.resolution_y = 6000
+    bpy.context.scene.render.resolution_y = 4500 #6000
 
 def create_text_object(text):
     bpy.ops.object.text_add()

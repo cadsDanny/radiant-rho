@@ -146,7 +146,17 @@ def create_spiral_squares(sizes=edge_lengths):
             # content= str(edge_lengths[i]),
             scale=sizes[i] * factor * .75
             )
-        
+        base_rho = '1.0'
+        if i < 13:
+              base_rho = "0." + (12-i)*"0" + "1"
+        add_text(
+            location=(positions[i][0], 
+                      positions[i][1] - sizes[i] * factor * .35, 
+                      0.001),
+            content=base_rho,
+            # content= str(edge_lengths[i]),
+            scale=sizes[i] * factor * .2
+            )
 
 def add_background():
     obj = bpy.ops.mesh.primitive_plane_add(

@@ -94,15 +94,16 @@ def create_header():
             content="We're number .011 !",
             # content="\"Rho\", the radiant number.",
             scale=0.35)
-    add_text(location=(header_position_x, header_position_y * .85, 0.001),
-            content="Use base-rho binary, and you can " +
-                    "be number .00111, too!",
-            scale=0.10)
+    add_text(location=(header_position_x, header_position_y * .88, 0.001),
+            # content="Use base-rho binary, and you can " +
+            #         "be number .00111, too!",
+            content="Get radiant with base-rho binary.",
+            scale=0.18)
     add_heading_background()
     
     
-def add_rho(location=(min_x * .52, header_position_y * .805, 0), 
-            scale=0.25):
+def add_rho(location=(header_position_x, header_position_y * .79, 0), 
+            scale=0.18):
     font_curve = bpy.data.curves.new(type="FONT", name="rho")
     font_curve.body = "r=1.324717..." # 𝞺 ⍴ 𝛒 "
     obj = bpy.data.objects.new(name="Greek Symbol", object_data=font_curve)
@@ -205,6 +206,7 @@ the mighty morphic number base
 we're number 0.011
 a number for better living
 a number for Ignatius
+there are 1.011 types of people in the world
 '''
 
 def add_light():

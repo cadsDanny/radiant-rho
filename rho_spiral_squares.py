@@ -94,10 +94,10 @@ def create_header():
             content="We're number .011 !",
             # content="\"Rho\", the radiant number.",
             scale=0.35)
-    add_text(location=(header_position_x, header_position_y * .88, 0.001),
+    add_text(location=(header_position_x, header_position_y * .82, 0.001),
             # content="Use base-rho binary, and you can " +
             #         "be number .00111, too!",
-            content="Get radiant with base-rho binary.",
+            content="Get radiant with base - 1.324717....",
             scale=0.18)
     add_heading_background()
     
@@ -247,7 +247,7 @@ def main():
     add_light()
     add_background()
     create_spiral_squares()
-    add_rho()
+    #add_rho()
     # print(calculate_positions())
 
 if __name__ == "__main__":

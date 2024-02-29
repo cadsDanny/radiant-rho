@@ -158,6 +158,14 @@ def create_spiral_squares(sizes=edge_lengths):
             scale=sizes[i] * factor * .2
             )
 
+
+def rounded_integers():
+    positions = calculate_positions()
+    for i in range(1, 14):
+        add_text(location=(positions[i][0], positions[i-1][1], 0.001),
+            content= str(edge_lengths[i]),
+            scale=edge_lengths[i] * factor * .25)
+    
 def add_background():
     obj = bpy.ops.mesh.primitive_plane_add(
             size = 1, #edge_lengths[-1] * factor,
@@ -258,6 +266,7 @@ def main():
     add_background()
     create_spiral_squares()
     #add_rho()
+    rounded_integers()
     # print(calculate_positions())
 
 if __name__ == "__main__":

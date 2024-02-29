@@ -60,6 +60,7 @@ def calculate_positions(start_position=origin,
     # and adding that shift to the previous position
 
     for i in range(1, 14):
+        
         previous_position = positions[i-1]
         shift_length = factor * (sizes[i-1]+sizes[i]) / 2
         shift_x = shift_length * (directions[(i+2) % 4][0])
@@ -124,7 +125,7 @@ def add_rho(location=(header_position_x, header_position_y * .79, 0),
 
 def create_spiral_squares(sizes=edge_lengths):
     positions = calculate_positions()
-    for i in range(0, 14):
+    for i in range(6, 14):
         # add a square plane, scaled to size
         # the default size of a plane is one meter 
         # largest square to be 28 centimeters
@@ -147,8 +148,8 @@ def create_spiral_squares(sizes=edge_lengths):
             scale=sizes[i] * factor * .75
             )
         base_rho = '1.0'
-        if i < 13:
-              base_rho = "0." + (12-i)*"0" + "1"
+    if i < 8:
+        base_rho = "0." + (7-i)*"0" + "1"
         add_text(
             location=(positions[i][0], 
                       positions[i][1] - sizes[i] * factor * .35, 
@@ -161,10 +162,27 @@ def create_spiral_squares(sizes=edge_lengths):
 
 def rounded_integers():
     positions = calculate_positions()
-    for i in range(1, 14):
-        add_text(location=(positions[i][0], positions[i-1][1], 0.001),
+    print(len(positions))
+    for i in range(6, 14):
+        if (i == 0):
+            location=(positions[i][0] + edge_lengths[i] * factor,
+                      positions[i][1], 0.001)
+        else:
+            if i % 2 == 0:
+                location=(positions[i-1][0], positions[i][1], 0.001)
+            else:
+                location=(positions[i][0], positions[i-1][1], 0.001)
+        add_text(location=location,
             content= str(edge_lengths[i]),
-            scale=edge_lengths[i] * factor * .25)
+            scale=edge_lengths[i] * factor * .60,
+            color="white")
+        location = (location[0],
+                    location[1] - (edge_lengths[i] * factor * .250),
+                    location[2])
+        add_text(location=location,
+            content= "10" + i*"0",
+            scale=edge_lengths[i] * factor * .15,
+            color="white")
     
 def add_background():
     obj = bpy.ops.mesh.primitive_plane_add(
@@ -191,7 +209,7 @@ def add_heading_background():
     bpy.context.active_object.active_material = bpy.data.materials["white"]
     
 # add labels to the squares indicating size
-def add_text(location, content, scale):
+def add_text(location, content, scale, color="black"):
     font_curve = bpy.data.curves.new(type="FONT", name="objectSize")
     font_curve.body = content
     obj = bpy.data.objects.new(name="Font Object", object_data=font_curve)
@@ -203,7 +221,7 @@ def add_text(location, content, scale):
     obj.location.y = location[1] - .05 * scale
     # obj.location.y = location[1] - scale / 2.3
     # obj.location.z = location[2]
-    obj.active_material = bpy.data.materials["black"]    
+    obj.active_material = bpy.data.materials[color]    
     bpy.context.scene.collection.objects.link(obj)
 
 

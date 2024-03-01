@@ -144,7 +144,6 @@ def create_spiral_squares(sizes=edge_lengths):
         add_text(
             location=(positions[i][0], positions[i][1], 0.001),
             content= labels_100[i],
-            # content= str(edge_lengths[i]),
             scale=sizes[i] * factor * .75
             )
         base_rho = '1.0'

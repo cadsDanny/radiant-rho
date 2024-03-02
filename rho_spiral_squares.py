@@ -14,8 +14,9 @@ RHO = 1.32471795724474602596090885447809734073
 #     the cyclic series of directions between squares,
     
 edge_lengths = [1, 2, 2, 3, 4, 5, 7, 9, 12, 16, 21, 28, 37, 49]
+roundeds = [0,0,0,0,0, 1, 1, 2, 2, 3, 4, 5, 7, 9]
 
-labels_100 = ['.03', '.03', '.05', '.06', '.08', '.11', '.14', '.18', '.25', '.32', '.43', '.57', '.75', '1.00']
+labels_100 = ['.03', '.03', '.05', '.06', '.07', '.11', '.14', '.18', '.25', '.32', '.43', '.57', '.75', '1.00']
 
 
 int_200 = [5, 7, 9, 12, 16, 21, 28, 37, 49, 65, 86, 114, 151, 200]
@@ -91,19 +92,18 @@ header_position_y =  max_y * 1.35
 
 
 def create_header():
-    add_text(location=(header_position_x, header_position_y, 0.001),
-            content="We're number .011 !",
+    add_text(location=(header_position_x, header_position_y * 1.05, 0.001),
+            # content="We're number .011 !",
+            content="Meet the new base.",#-1.324717...",
             # content="\"Rho\", the radiant number.",
             scale=0.35)
-    add_text(location=(header_position_x, header_position_y * .82, 0.001),
-            # content="Use base-rho binary, and you can " +
-            #         "be number .00111, too!",
-            content="Get radiant with base-1.324717....",
+    add_text(location=(header_position_x, header_position_y * .8, 0.001),
+            content="1.0 = 0.011 = 0.00111 = 0.00011111",
             scale=0.18)
     add_heading_background()
     
     
-def add_rho(location=(header_position_x, header_position_y * .79, 0), 
+def add_rho(location=(header_position_x, header_position_y * .9, 0), 
             scale=0.18):
     font_curve = bpy.data.curves.new(type="FONT", name="rho")
     font_curve.body = "r=1.324717..." # 𝞺 ⍴ 𝛒 "
@@ -148,39 +148,39 @@ def create_spiral_squares(sizes=edge_lengths):
             )
         base_rho = '1.0'
         if i < 13:
-            base_rho = "0." + (11-i)*"0" + "1"
+            base_rho = "0." + (12-i)*"0" + "1"
         add_text(
             location=(positions[i][0], 
                       positions[i][1] - sizes[i] * factor * .35, 
                       0.001),
             content=base_rho,
-            # content= str(edge_lengths[i]),
             scale=sizes[i] * factor * .2
             )
 
 
 def rounded_integers():
     positions = calculate_positions()
-    # print(len(positions))
-    for i in range(5, 14):
+    print(len(positions))
+    print(positions)
+    for i in range(5,14):
         if (i == 0):
-            location=(positions[i][0] + edge_lengths[i] * factor,
+            location=(positions[i][0] + roundeds[i] * factor,
                       positions[i][1], 0.001)
         else:
             if i % 2 == 0:
-                location=(positions[i-1][0], positions[i][1], 0.001)
+                location=(positions[i -1][0], positions[i][1], 0.001)
             else:
                 location=(positions[i][0], positions[i-1][1], 0.001)
         add_text(location=location,
-            content= str(edge_lengths[i-5]),
+            content= str(roundeds[i]),
             scale=edge_lengths[i] * factor * .60,
             color="white")
         location = (location[0],
-                    location[1] - (edge_lengths[i-5] * factor),
+                    location[1] - (roundeds[i] * factor * 1.2),
                     location[2])
         add_text(location=location,
-            content= "10" + (i-5)*"0",
-            scale=edge_lengths[i-5] * factor * .75,
+            content= "1" + (i-5)*"0",
+            scale=edge_lengths[i] * factor * .15,
             color="white")
     
 def add_background():
@@ -282,7 +282,7 @@ def main():
     add_light()
     add_background()
     create_spiral_squares()
-    #add_rho()
+    add_rho()
     rounded_integers()
     # print(calculate_positions())
 

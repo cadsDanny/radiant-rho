@@ -92,21 +92,18 @@ header_position_y =  max_y * 1.35
 
 
 def create_header():
-    add_text(location=(header_position_x, header_position_y * 1.05, 0.001),
-            # content="We're number .011 !",
-            content="Meet the new base.",#-1.324717...",
-            # content="\"Rho\", the radiant number.",
-            scale=0.35)
+    add_text(location=(header_position_x, header_position_y * 1.01, 0.001),
+            content="Meet the new base.",
+            scale=0.30)
     add_text(location=(header_position_x, header_position_y * .8, 0.001),
-            content="1.0 = 0.011 = 0.00111 = 0.00011111",
-            scale=0.18)
-    add_heading_background()
+            content="1.00000000    =    0.01100000    =    0.00111000    =    0.00011111    =    0.00001111...",
+            scale=0.10)
+    add_heading_background()    
     
-    
-def add_rho(location=(header_position_x, header_position_y * .9, 0), 
-            scale=0.18):
+def add_rho(location=(header_position_x, header_position_y * .8655, 0), 
+            scale=0.15):
     font_curve = bpy.data.curves.new(type="FONT", name="rho")
-    font_curve.body = "r=1.324717..." # 𝞺 ⍴ 𝛒 "
+    font_curve.body = "r=1.3247179572447..."#4602596..." # 𝞺 ⍴ 𝛒 "
     obj = bpy.data.objects.new(name="Greek Symbol", object_data=font_curve)
     fnt = bpy.data.fonts.load('/usr/share/fonts/ATHENS1X.TTF')
     obj.data.font = fnt
@@ -126,9 +123,6 @@ def add_rho(location=(header_position_x, header_position_y * .9, 0),
 def create_spiral_squares(sizes=edge_lengths):
     positions = calculate_positions()
     for i in range(5, 14):
-        # add a square plane, scaled to size
-        # the default size of a plane is one meter 
-        # largest square to be 28 centimeters
         border_size = i * 0.001 + 0.002
         bpy.ops.mesh.primitive_plane_add(
             size=sizes[i] * factor, 
@@ -176,7 +170,7 @@ def rounded_integers():
             scale=edge_lengths[i] * factor * .60,
             color="white")
         location = (location[0],
-                    location[1] - (roundeds[i] * factor * 1.2),
+                    location[1] - (roundeds[i] * factor * 1.4),
                     location[2])
         add_text(location=location,
             content= "1" + (i-5)*"0",
@@ -218,15 +212,12 @@ def add_text(location, content, scale, color="black"):
     obj.data.align_x = 'CENTER'
     obj.data.align_y = 'CENTER'
     obj.location.y = location[1] - .05 * scale
-    # obj.location.y = location[1] - scale / 2.3
-    # obj.location.z = location[2]
     obj.active_material = bpy.data.materials[color]    
     bpy.context.scene.collection.objects.link(obj)
 
 
 def add_camera():
     bpy.ops.object.camera_add(
-        # location=(min_x / 2, min_y / 2, 4.4), 
         location=(origin[0], origin[1] + .5, 4.4), 
         rotation=(0, 0, 0),
         scale=(1, 1, 1))
@@ -242,6 +233,14 @@ we're number 0.011
 a number for better living
 a number for Ignatius
 there are 1.011 types of people in the world
+squishy bits
+a better flavored binary
+beta bases' best bet
+the better beta base
+till your beta base is better...
+got flavor?
+the base with flavors
+for numbers with flavor
 '''
 
 def add_light():
@@ -258,22 +257,6 @@ def set_resolution():
     bpy.context.scene.render.resolution_x = 4500
     bpy.context.scene.render.resolution_y = 4500 #6000
 
-def create_text_object(text):
-    bpy.ops.object.text_add()
-
-    text_obj = bpy.context.active_object
-    text_obj.scale *= 0.49
-    text_obj.data.body = text
-
-    bpy.ops.object.origin_set(type="ORIGIN_CENTER_OF_MASS", 
-                              center="MEDIAN")
-    text_obj.location = 0, 0, 0
-    text_obj.data.extrude = 0.01
-    text_obj.data.fill_mode = "BOTH"
-    # text_obj.data.bevel_depth = 0.002
-    text_obj.data.materials.append(bpy.data.materials["black"])
-    
-    return text_obj
 
 def main():
     create_header()

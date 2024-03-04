@@ -101,7 +101,7 @@ def create_header():
     add_heading_background()    
     
 def add_rho(location=(header_position_x, header_position_y * .8655, 0), 
-            scale=0.15):
+            scale=0.135):
     font_curve = bpy.data.curves.new(type="FONT", name="rho")
     font_curve.body = "r=1.3247179572447..."#4602596..." # 𝞺 ⍴ 𝛒 "
     obj = bpy.data.objects.new(name="Greek Symbol", object_data=font_curve)
@@ -218,7 +218,7 @@ def add_text(location, content, scale, color="black"):
 
 def add_camera():
     bpy.ops.object.camera_add(
-        location=(origin[0], origin[1] + .5, 4.4), 
+        location=(origin[0], origin[1] + .35, 3.5), 
         rotation=(0, 0, 0),
         scale=(1, 1, 1))
     
